@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+    <style>
+
+    </style>
+</head>
+
+
+<body class="bg-slate-200">
+    <iframe id="myIframe" style="display: none;"></iframe>
+    <div class="m-2 bg-slate-200 p-2 flex-col">
+        <h1 class="text-xl">下記の方法でこのサイトを閲覧してください</h1>
+        <div class="bg-slate-50 max-w-lg rounded overflow-hidden shadow-lg mt-20 p-2">
+            <p class="text-lg text-gray-700">・向陽高校の生徒、職員の方は下のボタンでGoogleアカウントを学校のものにしてください</p>
+            <p class="text-lg text-gray-700">・アカウントが学校のものになっているのを確認出来たら、下の認証ボタンを押してください</p>
+            <div id="g_id_onload"
+                data-client_id="489226415675-inkctu4fefd2rokjcd9tpn0u44j75tem.apps.googleusercontent.com"
+                data-context="signin" data-ux_mode="popup" data-callback="handleCredentialResponse" data-nonce=""
+                data-auto_prompt="false">
+            </div>
+
+            <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+                data-text="continue_with" data-size="large" data-logo_alignment="left">
+            </div>
+            <button onclick="OnButtonClick();"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+                認証
+            </button>
+
+
+        </div>
+
+        <div class="bg-slate-50 max-w-lg rounded overflow-hidden shadow-lg mt-20 p-2">
+            <p class="text-lg text-gray-700">・向陽高校の関係者でない場合、下にパスワードを入力してください</p>
+            <form action="/" method="post" id="form" class="w-full max-w-sm">
+                <div class="flex items-center border-b border-blue-500 py-2">
+                    <input name="password" id="password"
+                        class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                        type="password" placeholder="パスワード" aria-label="password">
+                    <button onclick="pass()" type="submit"
+                        class="flex-shrink-0 bg-blue-500 hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded">
+                        パスワードで認証
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+
+
+    <button id="toggle" class="hidden" data-modal-target="staticModal" data-modal-toggle="staticModal"
+        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        type="button">
+        Toggle modal
+    </button>
+
+    <!-- Main modal -->
+    <div id="staticModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
+        class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-red-500 dark:text-white">
+                        再接続してください
+                    </h3>
+
+                </div>
+                <!-- Modal body -->
+                <div class="p-6 space-y-6">
+                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                        一定時間リクエストがなかったため、サーバーとの接続を解消しました。
+                    </p>
+                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                        ログインを続行したい場合は、再接続ボタンを押してください。
+                    </p>
+
+                </div>
+                <!-- Modal footer -->
+                <div onclick="reload();"
+                    class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="button"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">再接続</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        let newWindow;
+        function OnButtonClick() {
+            const url = "https://script.google.com/a/macros/koyo-h.com/s/AKfycbzi4wsC4x6B2w4JCpOfgYeXE3WIJCOVMt0L83PKDOX1BnyVcs6Xc7wogbbYPx4UWXjrgA/exec"
+            const Fullurl = url + "?id=" + clientId
+
+
+
+            // const myIframe = document.getElementById("myIframe");
+            // myIframe.src = Fullurl;
+            // myIframe.style.display = "block";
+
+            newWindow = window.open(Fullurl);
+
+
+        }
+
+        setTimeout(redirect, 1000 * 60 * 1);
+
+        function redirect() {
+            newWindow.close();
+            console.log("timeout")
+            document.getElementById("toggle").click();
+            socket.disconnect();
+
+        }
+
+        function reload() {
+
+            console.log("reload")
+            location.reload();
+        }
+
+
+
+    </script>
+
+
+
+    <script>
+        // サーバーへ接続
+        const socket = io();
+        socket.on('connect', () => {
+            clientId = socket.id;
+            console.log('自分のクライアントID:', clientId);
+            //document.getElementById("WSid").innerHTML = clientId;
+        });
+
+
+        socket.on('auth', (data) => {
+            // サーバーからの情報を受信した時の処理
+            newWindow.close();
+            console.log(data)
+            window.location.href = "/auth" + data;
+        });
+
+
+        socket.on('test', (data) => {
+            // サーバーからの情報を受信した時の処理
+            console.log(data)
+        });
+
+
+    </script>
+
+</body>
+
+</html>
